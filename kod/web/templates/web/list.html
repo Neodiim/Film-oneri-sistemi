@@ -1,0 +1,122 @@
+{% extends 'web/base.html'%}
+{% block body %}
+<style>
+    .thumbnail {
+        display: inline-block;
+        width: 300px; 
+        height: 300px; 
+        overflow: hidden; 
+        border-radius: 5px; 
+        border: 1px solid #ddd; 
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1); 
+        position: relative; 
+    }
+
+    .thumbnail img {
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+    }
+
+    .thumbnail .caption {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        text-align: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .thumbnail:hover .caption {
+        opacity: 1;
+    }
+
+    .thumbnail .caption .btn {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 150px; 
+        background-color: #007bff; 
+        color: #fff; 
+        padding: 8px 16px; 
+        border: none; 
+        border-radius: 4px; 
+        text-decoration: none; 
+        transition: background-color 0.3s ease; 
+    }
+
+    .thumbnail .caption .btn:hover {
+        background-color: #0056b3; 
+    }
+</style>
+<div class="container">
+    <div class="col-xs-6 col-xs-offset-3">
+    	<form class="form-horizontal" role="search" method="get" action=''>
+         <div class="form-group">
+         <div class="input-group">	
+            <input type="text" class="form-control input-lg " name="q" value="{{ request.GET.q }}" placeholder= "Film Ara "/>
+            <span class='input-group-btn'>
+
+             <button class='btn btn-info btn-lg' type='submit'>Ara
+             </button>
+         </span>
+        </div>
+     </div>
+   </form>
+
+ </div>
+</div>  
+    {% if messages %}
+            <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %} >{{ message }}</li>
+            {% endfor %}
+            </ul>
+    {% endif %}
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-2 col-md-3">
+		<h1>Film Listesi</h1>
+        </div>
+        <div class="col-xs-offset-9  mt-3">
+        <a href="{% url 'recommend' %}" class="btn"><strong><h2>Önerilenler</h2></strong></a>
+        </div>
+    </div>
+	</div>
+	<div class="container-fluid">
+    
+    <!-- Movie list -->
+    <div class="row">
+            {% if movies %}
+            {% for movie in movies %}
+                <div class="col-sm-2 col-md-2 ">
+                    <div class="thumbnail" >
+                        <h4>{{movie.title}}</h4>
+                        <a href="{% url 'detail' movie.id %}">
+                            {% if movie.movie_logo %}
+                                <img src="{{ movie.movie_logo.url }}" class="img-responsive">
+                            {% else %}
+                                <p>Resim kullanılamıyor</p>
+                            {% endif %}
+                        </a>
+                  
+                        <div class="caption">
+
+                            <!-- View Details -->
+                            <a href="{% url 'detail' movie.id %}" class="btn btn-primary btn-sm" role="button">Detayları Görüntüle</a>
+
+                                        
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+    
+    </div>
+
+{% endblock %}

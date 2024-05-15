@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{% block title %}Film Takip Sistemi{% endblock title %}</title>
+    {% load static %}
+
+
+	<link rel="stylesheet" type="text/css" href="{% static 'web/css/bootstrap.min.css'%}">
+    <link rel="stylesheet" type="text/css" href="{% static 'web/js/bootstrap.min.js'%}">
+    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css' >
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+	
+
+ 
+
+    <style type="text/css">
+        .thumbnail p, .thumbnail h4 {
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            }
+        .star-rating {
+            line-height:32px;
+            font-size:1.25em;
+            }
+
+.star-rating .fa-star{color: yellow;}
+        
+    </style>
+</head>
+<body>
+	<nav class="navbar navbar-inverse">
+                <div class="container-fluid">
+
+
+                    <!-- Items -->
+                    <div class="collapse navbar-collapse" id="topNavBar">
+                        <ul class="nav navbar-nav ">
+                            
+                            <li><a href="{% url 'index' %}">&nbsp; Anasayfa</a></li>
+                            
+						</ul>
+                        <ul class="nav navbar-nav navbar-left">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Kategoriler <span class="caret"></span></a>
+                                <ul class="dropdown-menu">
+                                    {% for category in categories %}
+                                        <li><a href="{% url 'category' category.id %}">{{ category.name }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <!-- Diğer menü öğeleri buraya gelebilir -->
+                        </ul>
+                          
+                        
+
+                        <ul class="nav navbar-nav navbar-right">
+                         {% if not request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'signup' %}">
+                                    <span aria-hidden="true"></span>&nbsp; 
+                                   Kayıt Ol
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'login' %}">
+                                    <span aria-hidden="true"></span>&nbsp; Giriş Yap
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'logout' %}">
+                                    <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp;Çıkış
+                                </a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                    </div>
+
+                </div>
+
+    </nav>
+</div>  
+    {% block body %}
+    {% endblock %}
+     <nav class="navbar navbar-bottom">                   
+    <footer class="page-footer font-small">
+    
+    </div>
+
+    </footer>
+    </nav>
+	<script type="text/javascript" src="{%static 'web/js/jquery.min.js'%}">
+	</script>
+
+	<script type="text/javascript" src="{%static 'web/js/bootstrap.min.js'%}">
+	</script>
+    <script type="text/javascript">
+    var $star_rating = $('.star-rating .fa');
+
+    var SetRatingStar = function() {
+        return $star_rating.each(function() {
+        if (parseInt($star_rating.siblings('input.rating-value').val()) >= parseInt($(this).data('rating'))) {
+            return $(this).removeClass('fa-star-o').addClass('fa-star');
+        } else {
+        return $(this).removeClass('fa-star').addClass('fa-star-o');
+        }
+        });
+        };
+
+    $star_rating.on('click', function() {
+    $star_rating.siblings('input.rating-value').val($(this).data('rating'));
+    return SetRatingStar();
+    });
+
+    SetRatingStar();
+    $(document).ready(function() {
+
+    });
+        
+</script>
+<script type="text/javascript">
+    function validateForm(){
+    var x = document.forms["ratingForm"]["rating"].value;
+    if(x=="0"){
+        alert("Hatalı Giriş");
+        return false;
+    }
+    }
+</script>
+
+</body>
+</html>
